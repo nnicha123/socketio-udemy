@@ -1,13 +1,17 @@
 // Client side
+import store from "./store.js";
+import ui from "./ui.js";
+import socketHandler from "./socketHandler.js";
 
-const socket = io("/");
+const nameInput = document.querySelector(".introduction_page_name_input");
 
-socket.on("connect", () => {
-  console.log("Successfully connected: " + socket.id);
+nameInput.addEventListener("keyup", (event) => {
+  store.setUsername(event.target.value);
 });
 
-socket.on("hello-client", () => {
-  console.log("hello-client");
-  //   Emit from client to server
-  socket.emit("hello-server");
+const chatPageButton = document.getElementById("enter_chats_button");
+chatPageButton.addEventListener("click", () => {
+  // go to chat page
+  ui.goToChatPage();
+  socketHandler.connectToSocketIoServer();
 });

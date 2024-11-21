@@ -15,14 +15,12 @@ app.get("/", (req, res) => {
 const io = require("socket.io")(server);
 
 io.on("connection", (socket) => {
-  console.log(socket.id);
+  socket.on("group-chat-message", (data) => {
+    // emit to all except sender
+    // socket.broadcast.emit("group-chat-message", data);
 
-  //   Emit event from server to client
-  socket.emit("hello-client");
-
-  //   Listener on server to the event hello-server
-  socket.on("hello-server", () => {
-    console.log("hello server");
+    // emit to all users
+    io.emit("group-chat-message", data);
   });
 });
 
