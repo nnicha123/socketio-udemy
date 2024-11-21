@@ -1,0 +1,25 @@
+{
+  "name": "socket.io-udemy",
+  "version": "1.0.0",
+  "description": "\"# socketio-udemy\"",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start":"nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nnicha123/socketio-udemy.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nnicha123/socketio-udemy/issues"
+  },
+  "homepage": "https://github.com/nnicha123/socketio-udemy#readme",
+  "dependencies": {
+    "express": "^4.21.1",
+    "nodemon": "^3.1.7",
+    "socket.io": "^4.8.1"
+  }
+}
