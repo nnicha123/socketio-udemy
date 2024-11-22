@@ -26,11 +26,15 @@ io.on("connection", (socket) => {
   });
 
   socket.on("register-new-user", (userData) => {
-    const { username } = userData;
+    const { username, roomId } = userData;
     const newPeer = {
       username,
       socketId: socket.id,
+      roomId,
     };
+
+    // join socket.io room
+    socket.join(roomId);
 
     connectedPeers = [...connectedPeers, newPeer];
     broadcaseConnectedPeers();
@@ -54,6 +58,11 @@ io.on("connection", (socket) => {
 
     // Emit event for receiver of message
     io.to(receiverSocketId).emit("direct-message", data);
+  });
+
+  socket.on("room-message", (data) => {
+    const { roomId } = data;
+    io.to(roomId).emit("room-message", data);
   });
 
   socket.on("disconnect", () => {

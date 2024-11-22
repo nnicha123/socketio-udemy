@@ -14,6 +14,7 @@ export const goToChatPage = () => {
   updateUsername(username);
 
   createGroupChatbox();
+  createRoomChatbox();
 };
 
 const updateUsername = (username) => {
@@ -47,6 +48,48 @@ const createGroupChatbox = () => {
       const message = event.target.value;
       //   send message to socket.io server
       socketHandler.sendGroupChatMessage(author, message);
+      newMessageInput.value = "";
+    }
+  });
+};
+
+const createRoomChatbox = () => {
+  const roomId = store.getRoomId();
+
+  const chatboxLabel = roomId;
+  const chatboxId = roomId;
+  const chatboxMessagesId = `${roomId}-messages`;
+  const chatboxInputId = `${roomId}-input`;
+
+  const data = {
+    chatboxLabel,
+    chatboxId,
+    chatboxMessagesId,
+    chatboxInputId,
+  };
+
+  const chatbox = elements.getChatbox(data);
+
+  const chatboxesContainer = document.querySelector(".chatboxes_container");
+  chatboxesContainer.appendChild(chatbox);
+
+  // adding event listener to send room chat messages
+  const newMessageInput = document.getElementById(chatboxInputId);
+  newMessageInput.addEventListener("keydown", (event) => {
+    const key = event.key;
+    if (key === "Enter") {
+      const author = store.getUsername();
+      const message = event.target.value;
+      const authorSocketId = store.getSocketId();
+
+      const data = {
+        author,
+        message,
+        authorSocketId,
+        roomId,
+      };
+      //   send message to socket.io server
+      socketHandler.sendRoomMessage(data);
       newMessageInput.value = "";
     }
   });
@@ -162,10 +205,22 @@ const removeChatboxOfDisconnectedPeer = (data) => {
   }
 };
 
+const appendRoomChatMessage = (data) => {
+  const { roomId } = data;
+
+  const chatboxMessagesId = `${roomId}-messages`;
+  const roomChatboxMessagesContainer =
+    document.getElementById(chatboxMessagesId);
+
+  const chatMessage = elements.getGroupChatMessage(data);
+  roomChatboxMessagesContainer.appendChild(chatMessage);
+};
+
 export default {
   goToChatPage,
   appendGroupChatMessage,
   updateActiveChatBoxes,
   appendDirectChatMessage,
   removeChatboxOfDisconnectedPeer,
+  appendRoomChatMessage,
 };

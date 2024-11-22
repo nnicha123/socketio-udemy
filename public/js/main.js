@@ -9,6 +9,11 @@ nameInput.addEventListener("keyup", (event) => {
   store.setUsername(event.target.value);
 });
 
+const roomSelect = document.getElementById("room_select");
+roomSelect.addEventListener("change", (event) => {
+  store.setRoomId(event.target.value);
+});
+
 const chatPageButton = document.getElementById("enter_chats_button");
 chatPageButton.addEventListener("click", () => {
   // go to chat page

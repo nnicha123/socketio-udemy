@@ -24,6 +24,10 @@ const connectToSocketIoServer = () => {
     ui.appendDirectChatMessage(data);
   });
 
+  socket.on("room-message", (data) => {
+    ui.appendRoomChatMessage(data);
+  });
+
   socket.on("peer-disconnected", (data) => {
     ui.removeChatboxOfDisconnectedPeer(data);
   });
@@ -32,6 +36,7 @@ const connectToSocketIoServer = () => {
 const registerActiveSession = () => {
   const userData = {
     username: store.getUsername(),
+    roomId: store.getRoomId(),
   };
 
   socket.emit("register-new-user", userData);
@@ -49,8 +54,13 @@ const sendDirectMessage = (data) => {
   socket.emit("direct-message", data);
 };
 
+const sendRoomMessage = (data) => {
+  socket.emit("room-message", data);
+};
+
 export default {
   connectToSocketIoServer,
   sendGroupChatMessage,
   sendDirectMessage,
+  sendRoomMessage,
 };
